@@ -1,0 +1,34 @@
+{
+    "variables": {
+        "target": ""
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "ap-northeast-1",
+            "source_ami_filter": {
+                "filters": {
+                    "description": "CentOS Linux 7 x86_64 HVM EBS ENA 1804*",
+                    "product-code": "aw0evgkw8e5c1q413zgy5pjce"
+                },
+                "owners": [
+                    "aws-marketplace"
+                ],
+                "most_recent": true
+            },
+            "instance_type": "t2.micro",
+            "ssh_username": "centos",
+            "ami_name": "isucon8-qualify-{{user `target`}}-{{isotime `20060102030405` }}",
+            "shutdown_behavior": "terminate"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "sftp_command": "/usr/libexec/openssh/sftp-server -e",
+            "playbook_file": "../provisioning/{{user `target`}}.yml",
+            "user": "centos",
+            "groups": ["{{user `target`}}"]
+        }
+    ]
+}

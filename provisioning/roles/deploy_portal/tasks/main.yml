@@ -2,13 +2,11 @@
 - name: deploy torb/portal
   become: yes
   become_user: isucon
-  synchronize:
+  copy:
     src: ../../../../portal
     dest: /home/isucon/torb/
-    recursive: yes
-    rsync_opts:
-      - "--exclude=local"
-      - "--exclude=log"
+    owner: isucon
+    group: isucon
 
 - name: chown torb/portal
   become: yes
